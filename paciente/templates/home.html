@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'medicos/css/abrir_horario.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+    <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}">
+    <link rel="stylesheet" href="{% static 'pacientes/css/home.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock 'head' %}
+
+
+{% block 'body' %}
+
+{% include "partials/navbar.html" %}
+
+<br><br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <p style="font-size: 25px" class="p-bold">Olá, <span class="color-dark">{{request.user.username}}.</span></p>
+            <form action="{% url 'home' %}" post="GET">
+                <input type="text" class="form-control shadow-main-color" placeholder="Busque por profissionais ..." name="medico">
+                <br>
+
+                <div class="especialidades">
+                    {% for especialidade in especialidades %}
+                        <input type="checkbox" name="especialidades" value="{{especialidade.id}}">
+                        <span class="badge bg-secondary">
+                            {{especialidade.especialidade}}
+                        </span>
+                    {% endfor %}
+                        
+
+                </div>
+                <br>
+                <input type="submit" value="filtrar" class="btn btn-success btn-dark-color">
+            </form>
+            <hr>
+
+            <div class="list-medicos">
+               
+                {% for medico in medicos %}
+                <div class="card-medicos shadow-main-color">
+                    <div class="row">
+                        <div class="col-md-3"><img src="{{medico.foto.url}}" class="foto-perfil-card" alt=""></div>
+                        <div class="col-md">
+                            <p style="font-size: 20px" class="p-bold">Dr(a). {{medico.nome}} <i class="bi bi-patch-check-fill icon-main"></i></p>
+                            <p>{{medico.descricao}}</p>
+                        </div>
+                    </div>  
+                    <p><i class="bi bi-map icon-main"></i>&nbsp&nbsp{{medico.rua}}.</p>
+                    <p><i class="bi bi-calendar2-week icon-main"></i>&nbsp&nbspProxima data: 
+                        
+                        {% if medico.proxima_data %}
+                            {{medico.proxima_data}}
+                        {% else %}
+                            Aguarde uma data.
+                        {% endif %}
+                        
+                    <a href="{% url 'escolher_horario' medico.id %}" class="btn btn-success btn-dark-color">Agendar</a>
+                </div>
+                <br>
+                {% endfor %}                
+
+
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <p style="font-size: 25px" class="p-bold">Lembretes</p>
+
+            <p class="bg-main-lembrete">
+                <span class="p-bold"><i class="bi bi-exclamation-triangle-fill icon-differential"></i>&nbsp&nbsp Consulta com Pedro Sampario em 7 dias.</span>
+            </p>
+
+
+            
+        </div>
+    </div>
+</div>
+
+{% endblock 'body' %}

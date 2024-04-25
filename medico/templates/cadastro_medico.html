@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+    <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}">
+{% endblock 'head' %}
+
+{% block 'body' %}
+{% include "partials/navbar.html" %}
+<div class="container">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-8">
+    
+            <p class="p-bold">Olá, <span class="color-dark">{{request.user.username}}</span></p>
+            <p class="p-bold">Vamos realizar seu cadastro médico legal.</p>
+            {% if messages %}
+                <br>
+                {% for message in messages %}
+                    <section class="alert {{message.tags}}">
+                        {{message}}
+                    </section>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <form action="{% url 'cadastro_medico' %}" method="post" enctype='multipart/form-data'>{% csrf_token %}
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">CRM:</label>
+                        <input type="text" class="form-control shadow-main-color" name="crm" placeholder="CRM...">
+                    </div>
+                    <div class="col-md">
+                        <label for="">Cédula de identidade médica:</label>
+                        <input type="file" name="cim" id="" class="form-control shadow-main-color">
+
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">Nome completo:</label>
+                        <input type="text" class="form-control shadow-main-color" name="nome" placeholder="Digite seu nome ...">
+                    </div>
+                    <div class="col-md">
+                        <label for="">CEP</label>
+                        <input type="text" name="cep" id="" class="form-control shadow-main-color">
+
+                    </div>
+                </div>
+                <br>
+                <label for="">Rua</label>
+                <input type="text" name="rua" id="" class="form-control shadow-main-color" placeholder="Endereço ...">
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">Bairro:</label>
+                        <input type="text" class="form-control shadow-main-color" name="bairro" placeholder="Bairro ...">
+                    </div>
+                    <div class="col-md">
+                        <label for="">Número:</label>
+                        <input type="number" name="numero" id="" class="form-control shadow-main-color">
+
+                    </div>
+                </div>
+                <br>
+                <label for="">RG:</label>
+                <input type="file" name="rg" id="" class="form-control shadow-main-color">
+                <br>
+                <label for="">Foto de perfil:</label>
+                <input type="file" name="foto" id="" class="form-control shadow-main-color">
+                <br>
+                <label for="">Especialidade médica</label>
+                <select name="especialidade" class="form-select" id="">
+                   
+                    {% for i in especialidades %}
+                        <option value="{{i.id}}">{{i.especialidade}}</option>
+                    {% endfor %}
+                   
+
+                </select>
+                <br>
+                <label for="">Descrição:</label>
+                <textarea name="descricao" class="form-control shadow-main-color"></textarea>
+                <br>
+                <label for="">Valor consulta:</label>
+                <input type="number" name="valor_consulta" class="form-control shadow-main-color">
+                <br>
+                <input type="submit" value="Cadastre-se" class="btn btn-success btn-dark-color">
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+</div>
+
+{% endblock 'body' %}

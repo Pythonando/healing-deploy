@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+
+    <link rel="stylesheet" href="{% static 'medicos/css/abrir_horario.css' %}">
+    <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+    <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}">
+    <link rel="stylesheet" href="{% static 'pacientes/css/home.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+{% endblock 'head' %}
+
+
+{% block 'body' %}
+{% include "partials/navbar.html" %}
+
+    <div class="container">
+        <br><br>
+
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-md-3"><img src="{{medico.foto.url}}" class="foto-perfil-card" alt=""></div>
+                    <div class="col-md">
+                        <p style="font-size: 20px" class="p-bold">Dr(a). {{medico.nome}}  <i class="bi bi-patch-check-fill icon-main"></i></p>
+                        <p>{{medico.descricao}}</p>
+                    </div>
+                </div> 
+                <br>
+                {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                
+                <hr>
+                    
+            
+                <div class="row">
+                    
+                    {% for data_aberta in datas_abertas %}
+                        <div class="col-md-3">
+                            <a class="link" href="{% url 'agendar_horario' data_aberta.id %}">
+                            <div class='selecionar-dia'>
+                            <div class="header-dias">
+                                <span class="mes">
+                                {{data_aberta.data.month}}
+                                </span>
+                                
+                                <span class="dia-semana">
+                                {{data_aberta.data.weekday}}
+                                </span>
+                            </div>
+            
+                            <div class="conteudo-data">
+                                {{data_aberta.data}}
+                            </div>
+                            </div>
+                            </a>
+                            <br>
+                        </div>
+                    {% endfor %}
+                        
+                   
+                    
+                </div>
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+
+    </div>
+{% endblock 'body' %}
